@@ -1,0 +1,70 @@
+/* Container holding both forms side-by-side */
+.auth-container {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+/* Each form container */
+.form-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  margin: 0 1rem;
+}
+
+/* Shared styles for the title */
+.auth-title {
+  margin-bottom: 1rem;
+  font-size: 1.5rem;
+  text-align: left;
+}
+
+/* The form element */
+.auth-form {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Labels */
+.auth-label {
+  margin-bottom: 0.5rem;
+  font-weight: bold;
+}
+
+/* Inputs */
+.auth-input {
+  margin-bottom: 1rem;
+  padding: 0.5rem;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+/* Buttons */
+.auth-button {
+  margin-bottom: 1rem;
+  padding: 0.75rem 1rem;
+  font-size: 1rem;
+  background-color: #333;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+/* “Forgot password?” link container */
+.forgot-password {
+  text-align: right;
+}
+
+/* Divider between the two forms */
+.divider {
+  width: 1px;
+  background-color: #ccc;
+  margin: 0 1rem;
+}
