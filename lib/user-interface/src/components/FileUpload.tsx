@@ -1,17 +1,20 @@
 // FileUpload.tsx
 import React, { useState, ChangeEvent, FormEvent } from "react";
-import axios from "axios";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { useNavigate } from "react-router-dom";
 
 const FileUpload: React.FC = () => {
   const [file, setFile] = useState<File | null>(null);
   const [error, setError] = useState<string | null>(null);
-  const [uploadStatus, setUploadStatus] = useState<string>("");
+  const navigate = useNavigate();
 
   const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
     const selectedFile = event.target.files?.[0] || null;
     if (selectedFile && selectedFile.type !== "text/csv") {
       setError("Please upload a CSV file.");
       setFile(null);
+      toast.error("Invalid file type. Please upload a CSV file.");
     } else {
       setError(null);
       setFile(selectedFile);
@@ -26,17 +29,22 @@ const FileUpload: React.FC = () => {
     formData.append("csvFile", file);
 
     try {
-      setUploadStatus("Uploading...");
-      console.log("Uploading file:", file);
-      const response = await axios.post("/api/upload-csv", formData, {
-        headers: { "Content-Type": "multipart/form-data" },
+      const response = await fetch("/api/upload-csv", {
+        method: "POST",
+        body: formData,
       });
-      console.log("Response:", response);
-      setUploadStatus("Upload successful!");
-      console.log("Server response:", response.data);
-    } catch (error) {
-      setUploadStatus("Upload failed.");
-      console.error("Error uploading file:", error);
+
+      if (response.ok) {
+        toast.success("File uploaded successfully.");
+        // Optionally navigate to a charts view after upload
+        navigate("/view-charts");
+      } else {
+        const errorMessage = await response.text();
+        toast.error(`Upload failed: ${errorMessage}`);
+      }
+    } catch (err) {
+      console.error("Error uploading file:", err);
+      toast.error("Error uploading file.");
     }
   };
 
@@ -47,7 +55,7 @@ const FileUpload: React.FC = () => {
       <button type="submit" disabled={!file}>
         Upload Here
       </button>
-      {uploadStatus && <p>{uploadStatus}</p>}
+      <ToastContainer />
     </form>
   );
 };

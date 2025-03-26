@@ -1,15 +1,19 @@
 import React, { useState } from "react";
 import "../styles/auth.css";
+import { useNavigate } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { set } from "date-fns";
 
 const AuthPage: React.FC = () => {
   const [loginEmail, setLoginEmail] = useState("");
   const [loginPassword, setLoginPassword] = useState("");
   const [registerEmail, setRegisterEmail] = useState("");
   const [registerPassword, setRegisterPassword] = useState("");
+  const navigate = useNavigate();
 
   const loginFormSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
-
     try {
       const response = await fetch("/api/auth/login", {
         method: "POST",
@@ -19,9 +23,19 @@ const AuthPage: React.FC = () => {
 
       const data = await response.json();
       if (response.ok) {
+        // If your backend returns a token, store it in localStorage.
+        if (data.token) {
+          localStorage.setItem("token", data.token);
+        }
         console.log("Login success:", data);
+        setLoginEmail("");
+        setLoginPassword("");
+        toast.success("Login successful!");
+        // Navigate to your dashboard (or any protected route)
+        navigate("/dashboard");
       } else {
-        console.error("Login error:", data);
+        toast.error("Login failed. Please try again.");
+        console.error("Login error:", data.message || data);
       }
     } catch (error) {
       console.error("Login exception:", error);
@@ -30,22 +44,24 @@ const AuthPage: React.FC = () => {
 
   const registerFormSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
-
     try {
       const response = await fetch("/api/auth/register", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          email: registerEmail,
-          password: registerPassword,
-        }),
+        body: JSON.stringify({ email: registerEmail, password: registerPassword }),
       });
 
       const data = await response.json();
       if (response.ok) {
+        toast.success("Registration successful!");
         console.log("Registration success:", data);
+        setRegisterEmail("");
+        setRegisterPassword("");
+        // Optionally, you can auto-login or navigate to login page after registration
+        navigate("/dashboard");
       } else {
-        console.error("Registration error:", data);
+        toast.error("Registration failed. Please try again.");
+        console.error("Registration error:", data.message || data);
       }
     } catch (error) {
       console.error("Registration exception:", error);
