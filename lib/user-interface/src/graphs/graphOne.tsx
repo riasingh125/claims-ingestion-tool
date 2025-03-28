@@ -11,6 +11,7 @@ const Graph1: React.FC<Graph1Props> = ({ data }) => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
 
   useEffect(() => {
+    console.log("Graph1 received data:", data);
     if (!canvasRef.current) return;
     // Aggregate data by, for example, payer_name.
     const aggregation: { [key: string]: { totalCharge: number; totalPaid: number } } = {};
@@ -25,6 +26,9 @@ const Graph1: React.FC<Graph1Props> = ({ data }) => {
     const labels = Object.keys(aggregation);
     const totalCharges = labels.map((label) => aggregation[label].totalCharge);
     const totalPaid = labels.map((label) => aggregation[label].totalPaid);
+    console.log("Chart labels:", labels);
+    console.log("Total Charges:", totalCharges);
+    console.log("Total Paid:", totalPaid);
 
     const chart = new Chart(canvasRef.current, {
       type: "bar", // Or "line" depending on your preference

@@ -31,8 +31,7 @@ const AuthPage: React.FC = () => {
         setLoginEmail("");
         setLoginPassword("");
         toast.success("Login successful!");
-        // Navigate to your dashboard (or any protected route)
-        navigate("/dashboard");
+        navigate("/upload-csv");
       } else {
         toast.error("Login failed. Please try again.");
         console.error("Login error:", data.message || data);

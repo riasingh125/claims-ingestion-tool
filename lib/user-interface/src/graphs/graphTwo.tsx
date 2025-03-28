@@ -7,6 +7,14 @@ interface Graph2Props {
   data: ClaimData[];
 }
 
+function getRandomColor() {
+  const r = Math.floor(Math.random() * 256);
+  const g = Math.floor(Math.random() * 256);
+  const b = Math.floor(Math.random() * 256);
+  return `rgba(${r}, ${g}, ${b}, 0.6)`;
+}
+
+
 const Graph2: React.FC<Graph2Props> = ({ data }) => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
 
@@ -20,6 +28,7 @@ const Graph2: React.FC<Graph2Props> = ({ data }) => {
     });
     const labels = Object.keys(counts);
     const claimCounts = labels.map((label) => counts[label]);
+    const randomColors = labels.map(() => getRandomColor());
 
     const chart = new Chart(canvasRef.current, {
       type: "pie", // or "bar" if you prefer
@@ -29,9 +38,7 @@ const Graph2: React.FC<Graph2Props> = ({ data }) => {
           {
             label: "Claims by Provider",
             data: claimCounts,
-            backgroundColor: labels.map(
-              () => "rgba(54, 162, 235, 0.6)"
-            ), // you could generate distinct colors
+            backgroundColor: randomColors,
           },
         ],
       },

@@ -12,10 +12,10 @@ function App() {
       <Router>
         <NavbarComponent />
         <Routes>
+          <Route path="/" element={<AuthPage />} />
           <Route path="/auth/login" element={<AuthPage />} />
           <Route path="/upload-csv" element={<CsvUploadPage />} />
           <Route path="/view-charts" element={<ReportPage />} />
-          {/* Add other routes as needed */}
         </Routes>
       </Router>
     </CSVProvider>

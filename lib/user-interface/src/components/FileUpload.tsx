@@ -38,6 +38,7 @@ const FileUpload: React.FC = () => {
         toast.success("File uploaded successfully.");
         // Optionally navigate to a charts view after upload
         navigate("/view-charts");
+        window.location.reload()
       } else {
         const errorMessage = await response.text();
         toast.error(`Upload failed: ${errorMessage}`);
@@ -52,9 +53,9 @@ const FileUpload: React.FC = () => {
     <form onSubmit={handleSubmit}>
       <input type="file" accept=".csv" onChange={handleFileChange} />
       {error && <p style={{ color: "red" }}>{error}</p>}
-      <button type="submit" disabled={!file}>
+      <button type="submit" disabled={!file} >
         Upload Here
-      </button>
+      </button> 
       <ToastContainer />
     </form>
   );
